@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rubik+Mono+One&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Rubik Mono One", sans-serif;
+  
+  --color-brand-bg: #FFD200;
+  --color-brand-ink: #000000;
+  --color-brand-line: #000000;
+  --color-brand-surface: #FFD200;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-brand-bg);
+    background-image: 
+      radial-gradient(var(--color-brand-line) 0.5px, transparent 0.5px),
+      linear-gradient(to right, rgba(20,20,20,0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(20,20,20,0.02) 1px, transparent 1px);
+    background-size: 24px 24px, 120px 120px, 120px 120px;
+    @apply text-brand-ink font-sans antialiased min-h-screen relative overflow-x-hidden;
+  }
+}
+
+@layer components {
+  .scanline {
+    width: 100%;
+    height: 100px;
+    z-index: 5;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(20, 20, 20, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+    opacity: 0.1;
+    position: absolute;
+    bottom: 100%;
+    pointer-events: none;
+    animation: scanline 8s linear infinite;
+  }
+
+  .perspective-container {
+    perspective: 1000px;
+    perspective-origin: center center;
+  }
+
+  .grid-3d {
+    background-image: 
+      linear-gradient(to right, var(--color-brand-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-brand-line) 1px, transparent 1px);
+    background-size: 60px 60px;
+    transform: rotateX(60deg);
+    transform-origin: top center;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
+  }
+
+  @keyframes scanline {
+    0% { bottom: 100%; }
+    100% { bottom: -100px; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+  }
+
+  .animate-float {
+    animation: float 10s ease-in-out infinite;
+  }
+
+  .corner-mark {
+    @apply w-4 h-4 border-brand-line opacity-20 pointer-events-none absolute;
+  }
+}
+
+.technical-grid-item {
+  @apply border-r border-brand-line p-6 last:border-r-0;
+}
+
+.technical-table-header {
+  @apply grid grid-cols-[120px_1fr_120px_120px_100px] p-4 bg-brand-ink text-brand-bg text-[10px] font-mono tracking-widest uppercase items-center;
+}
+
+.technical-table-row {
+  @apply grid grid-cols-[120px_1fr_120px_120px_100px] p-4 border-b border-brand-line/10 items-center hover:bg-brand-ink/5 transition-colors cursor-pointer;
+}

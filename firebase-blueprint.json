@@ -1,0 +1,95 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "System user (Admin, Manager, or Master)",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin", "manager", "master"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "Client": {
+      "title": "Client",
+      "description": "Service center customer",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "address": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "phone"]
+    },
+    "Device": {
+      "title": "Device",
+      "description": "Technician device info",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "description": "e.g. Smartphone, Laptop" },
+        "brand": { "type": "string" },
+        "model": { "type": "string" },
+        "serialNumber": { "type": "string" }
+      },
+      "required": ["type", "brand", "model"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Repair request (Ticket)",
+      "type": "object",
+      "properties": {
+        "clientId": { "type": "string" },
+        "deviceId": { "type": "string" },
+        "issueDescription": { "type": "string" },
+        "appearance": { "type": "string" },
+        "status": { 
+          "type": "string", 
+          "enum": ["New", "On Diagnostics", "Price Agreement", "Waiting for Parts", "In Progress", "Done", "Delivered"] 
+        },
+        "assignedMasterId": { "type": "string" },
+        "totalPrice": { "type": "number" },
+        "deviceImageUrl": { "type": "string", "description": "URL to the photo of the damaged device" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clientId", "deviceId", "issueDescription", "status", "createdAt"]
+    },
+    "Inventory": {
+      "title": "Inventory",
+      "description": "Spare parts and components",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "sku": { "type": "string" },
+        "quantity": { "type": "number" },
+        "purchasePrice": { "type": "number" },
+        "sellPrice": { "type": "number" }
+      },
+      "required": ["name", "sku", "quantity", "purchasePrice", "sellPrice"]
+    },
+    "OrderItem": {
+      "title": "OrderItem",
+      "description": "Part linked to an order",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string" },
+        "inventoryId": { "type": "string" },
+        "quantity": { "type": "number" },
+        "price": { "type": "number" }
+      },
+      "required": ["orderId", "inventoryId", "quantity", "price"]
+    }
+  },
+  "firestore": {
+    "users": { "schema": "User", "description": "System users and roles" },
+    "clients": { "schema": "Client", "description": "Customer database" },
+    "orders": { "schema": "Order", "description": "Ticketing system" },
+    "inventory": { "schema": "Inventory", "description": "Spare parts stock" },
+    "orderItems": { "schema": "OrderItem", "description": "Parts consumed by orders" }
+  }
+}
